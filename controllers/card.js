@@ -14,7 +14,7 @@ const createCard = (req, res, next) => {
   const { name, link } = req.body;
   const owner = req.user._id;
 
-  return Card.create({ name, link, owner })
+  Card.create({ name, link, owner })
     .then((newCard) => {
       res.status(201).send(newCard);
     })
@@ -29,7 +29,7 @@ const createCard = (req, res, next) => {
 const deleteCard = (req, res, next) => {
   const { cardId } = req.params;
 
-  return Card.findByIdAndRemove(cardId)
+  Card.findByIdAndRemove(cardId)
     .then((card) => {
       if (!card) {
         throw new NotFound('Карточка с указанным _id не найдена.');

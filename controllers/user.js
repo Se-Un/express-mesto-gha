@@ -13,7 +13,7 @@ const getUsers = (req, res) => {
 const getUserById = (req, res, next) => {
   const { userId } = req.params;
 
-  return User.findById(userId)
+  User.findById(userId)
     .then((user) => {
       if (!user) {
         throw new NotFound('Пользователь по указанному _id не найден.');
@@ -32,7 +32,7 @@ const getUserById = (req, res, next) => {
 const createUser = (req, res, next) => {
   const { name, about, avatar } = req.body;
 
-  return User.create({ name, about, avatar })
+  User.create({ name, about, avatar })
     .then((newUser) => res.status(201).send(newUser))
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -75,7 +75,7 @@ const updateAvatar = (req, res, next) => {
   )
     .then((user) => res.status(200).send(user))
     .catch((err) => {
-      if (err.name === 'ValidationError') {
+      if (err.name === 'ValidationError' || err.name === 'CastError') {
         next(new BadRequest('Переданы некорректные данные'));
         return;
       }
