@@ -2,6 +2,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const routes = require('./routes');
 
 const { PORT = 3000, DB_PATH = 'mongodb://127.0.0.1:27017/mestodb' } = process.env;
 
@@ -16,9 +17,7 @@ app.use((req, res, next) => {
   next();
 });
 
-mongoose.connect(DB_PATH);
-
-app.use('/', require('./routes/index'));
+app.use(routes);
 
 app.use((err, req, res, next) => {
   const { statusCode = 500, message } = err;
@@ -27,6 +26,8 @@ app.use((err, req, res, next) => {
   });
   next();
 });
+
+mongoose.connect(DB_PATH);
 
 app.listen(PORT, () => {
   console.log('Great Work');
