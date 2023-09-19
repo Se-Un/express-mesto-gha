@@ -9,6 +9,8 @@ const app = express();
 
 app.use(bodyParser.json());
 
+app.use('/', require('./routes/index'));
+
 app.use((req, res, next) => {
   req.user = {
     _id: '64ff316ff437342ddd54e205',
@@ -25,8 +27,6 @@ app.use((err, req, res, next) => {
 });
 
 mongoose.connect(DB_PATH);
-
-app.use('/', require('./routes/index'));
 
 app.listen(PORT, () => {
   console.log('Great Work');
