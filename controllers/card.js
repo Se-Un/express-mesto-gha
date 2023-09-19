@@ -74,11 +74,11 @@ const dislikeCard = (req, res, next) => {
       if (!card) {
         throw new NotFound('Карточка с указанным _id не найдена.');
       }
-      res.status(200).send({ data: card });
+      res.status(200).send(card);
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        return next(new BadRequest('Переданы некорректные данные для снятия лайка'));
+        return next(new BadRequest('Переданы некорректные данные для постановки лайка'));
       }
       return next(err);
     });
