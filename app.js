@@ -21,7 +21,7 @@ app.use('/', require('./routes/index'));
 app.use((err, req, res, next) => {
   const { statusCode = 500, message } = err;
   res.status(statusCode).send({
-    messagge: statusCode === 500 ? 'Ошибка по умолчанию' : message,
+    message: statusCode === 500 ? 'Ошибка по умолчанию' : message,
   });
   next();
 });
