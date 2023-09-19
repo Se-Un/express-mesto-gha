@@ -68,16 +68,16 @@ const dislikeCard = (req, res, next) => {
   Card.findByIdAndUpdate(
     req.params.cardId,
     { $pull: { likes: req.user._id } },
-    { new: true, runValidators: true },
+    { new: true },
   )
     .then((card) => {
       if (!card) {
         throw new NotFound('Карточка с указанным _id не найдена.');
       }
-      res.status(200).send(card);
+      res.status(200).send({ data: card });
     })
     .catch((err) => {
-      if (err.name === 'CastError' || err.name === 'ValidationError') {
+      if (err.name === 'CastError') {
         return next(new BadRequest('Переданы некорректные данные для снятия лайка'));
       }
       return next(err);
