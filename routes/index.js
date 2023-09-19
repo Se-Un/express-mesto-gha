@@ -1,5 +1,4 @@
 const router = require('express').Router();
-const express = require('express');
 const userRoutes = require('./user');
 const cardRoutes = require('./card');
 const NotFound = require('../errors/NotFound');
