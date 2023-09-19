@@ -26,7 +26,7 @@ app.use((err, req, res, next) => {
 
 mongoose.connect(DB_PATH);
 
-app.use('/', require('./routes/index'));
+app.use('/', require('./routes'));
 
 app.listen(PORT, () => {
   console.log('Great Work');
