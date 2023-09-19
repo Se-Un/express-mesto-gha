@@ -9,14 +9,14 @@ const app = express();
 
 app.use(bodyParser.json());
 
-app.use('/', require('./routes/index'));
-
 app.use((req, res, next) => {
   req.user = {
     _id: '64ff316ff437342ddd54e205',
   };
   next();
 });
+
+app.use('/', require('./routes/index'));
 
 app.use((err, req, res, next) => {
   const { statusCode = 500, message } = err;
