@@ -2,7 +2,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const routes = require('./routes/');
+const routes = require('./routes');
 
 const { PORT = 3000, DB_PATH = 'mongodb://127.0.0.1:27017/mestodb' } = process.env;
 
@@ -10,14 +10,14 @@ const app = express();
 
 app.use(bodyParser.json());
 
+app.use(routes);
+
 app.use((req, res, next) => {
   req.user = {
     _id: '64ff316ff437342ddd54e205',
   };
   next();
 });
-
-app.use(routes);
 
 app.use((err, req, res, next) => {
   const { statusCode = 500, message } = err;
