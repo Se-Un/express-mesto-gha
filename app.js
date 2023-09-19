@@ -17,6 +17,8 @@ app.use((req, res, next) => {
   next();
 });
 
+mongoose.connect(DB_PATH);
+
 app.use(routes);
 
 app.use((err, req, res, next) => {
@@ -27,7 +29,7 @@ app.use((err, req, res, next) => {
   next();
 });
 
-mongoose.connect(DB_PATH);
+
 
 app.listen(PORT, () => {
   console.log('Great Work');
