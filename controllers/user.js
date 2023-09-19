@@ -2,12 +2,12 @@ const User = require('../models/user');
 const NotFound = require('../errors/NotFound');
 const BadRequest = require('../errors/BadRequest');
 
-const getUsers = (req, res) => {
+const getUsers = (req, res, next) => {
   User.find({})
     .then((users) => {
       res.status(200).send(users);
     })
-    .catch((err) => console.log(err));
+    .catch(next);
 };
 
 const getUserById = (req, res, next) => {
