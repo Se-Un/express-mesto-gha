@@ -78,9 +78,9 @@ const dislikeCard = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new BadRequest('Переданы некорректные данные для снятия лайка'));
+        return next(new BadRequest('Переданы некорректные данные для снятия лайка'));
       }
-      next(err);
+      return next(err);
     });
 };
 
