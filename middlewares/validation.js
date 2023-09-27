@@ -66,7 +66,7 @@ const validationCardId = celebrate({
   }),
 });
 
-export default {
+module.exports = {
   validationLogin,
   validationCreateUser,
   validationUpdateUser,
