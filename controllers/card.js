@@ -34,7 +34,13 @@ const deleteCard = (req, res, next) => {
       if (!card) {
         throw new NotFound('Карточка с указанным _id не найдена.');
       }
-      res.status(200).send(card);
+      if (!card.owner.equals(req.user._id)) {
+        return next(new Error('Вы не можете удалить чужой ресурс'));
+      }
+      return card.remove()
+        .then(() => {
+          res.status(200).send(card);
+        });
     })
     .catch((err) => {
       if (err.name === 'CastError') {
