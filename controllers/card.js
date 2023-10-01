@@ -44,7 +44,6 @@ const deleteCard = (req, res, next) => {
         })
         .catch(next);
     })
-    .catch((err) => console.dir(err))
     .catch((err) => {
       if (err.name === 'CastError') {
         return next(new BadRequest('Переданы некорректные данные для постановки лайка'));
