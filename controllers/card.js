@@ -1,6 +1,7 @@
 const Card = require('../models/card');
 const BadRequest = require('../errors/BadRequest');
 const NotFound = require('../errors/NotFound');
+const ConflictDeleteError = require('../errors/ConflictDeleteError');
 
 const getCards = (req, res) => {
   Card.find({})
@@ -18,7 +19,6 @@ const createCard = (req, res, next) => {
     .then((newCard) => {
       res.status(201).send(newCard);
     })
-    .catch((err) => console.dir(err))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         return next(new BadRequest('Переданы некорректные данные при создании карточки'));
@@ -36,13 +36,15 @@ const deleteCard = (req, res, next) => {
         throw new NotFound('Карточка с указанным _id не найдена.');
       }
       if (!card.owner.equals(req.user._id)) {
-        return next(new Error('Вы не можете удалить чужой ресурс'));
+        return next(new ConflictDeleteError('Вы не можете удалить чужой ресурс'));
       }
-      return card.remove()
+      return Card.findByIdAndRemove(cardId)
         .then(() => {
           res.status(200).send(card);
-        });
+        })
+        .catch(next);
     })
+    .catch((err) => console.dir(err))
     .catch((err) => {
       if (err.name === 'CastError') {
         return next(new BadRequest('Переданы некорректные данные для постановки лайка'));
