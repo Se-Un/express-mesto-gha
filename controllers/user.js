@@ -49,7 +49,7 @@ const createUser = (req, res, next) => {
       },
     ))
     .catch((err) => {
-      if (err.name === 11000) {
+      if (err.code === 11000) {
         next(new CurrentUserError('Пользователь с таким email уже зарегистрирован'));
       }
       if (err.name === 'ValidationError') {
