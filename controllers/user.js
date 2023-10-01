@@ -112,14 +112,14 @@ const login = (req, res, next) => {
 };
 
 const getCurrentUser = (req, res, next) => {
-  const { _id } = req.user;
-  User.findById(_id)
+  User.findById(req.user._id)
     .then((user) => {
       if (!user) {
         throw new NotFound('Пользователь по указанному _id не найден.');
       }
       res.status(200).send(user);
     })
+    .catch((err) => console.dir(err))
     .catch((err) => {
       if (err.name === 'CastError') {
         next(new BadRequest('Переданы некорректные данные'));
