@@ -15,7 +15,8 @@ const { PORT = 3000, DB_PATH = 'mongodb://127.0.0.1:27017/mestodb' } = process.e
 
 app.post('/signin', validationLogin, login);
 app.post('/signup', validationCreateUser, createUser);
-app.use('/', auth, require('./routes/index'));
+app.use(auth);
+app.use('/', require('./routes/index'));
 
 app.use(errors());
 
