@@ -37,23 +37,23 @@ const createUser = (req, res, next) => {
   } = req.body;
 
   bcrypt.hash(password, 10)
-    .then((hash) => {
-      User.create({
-        name, about, avatar, email, password: hash,
-      })
-        .then(() => res.status(201).send({
-          data: {
-            name, about, avatar, email,
-          },
-        }))
-        .catch((err) => {
-          if (err.name === 'ValidationError') {
-            next(new BadRequest('Переданы некорректные данные'));
-          } else {
-            next(err);
-          }
-        });
-    });
+    .then((hash) => User.create({
+      name, about, avatar, email, password: hash,
+    }))
+    .then(() => res.status(201).send(
+      {
+        data: name, about, avatar, email,
+      },
+    ))
+    .catch((err) => console.dir(err))
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        next(new BadRequest('Переданы некорректные данные'));
+      } else {
+        next(err);
+      }
+    })
+    .catch(next);
 };
 
 const updateUser = (req, res, next) => {
@@ -100,7 +100,7 @@ const login = (req, res, next) => {
   const { email, password } = req.body;
   return User.findUserByCredentials(email, password)
     .then((user) => {
-      const token = jwt.sign({ _id: user._id }, 'super-strong-secret', { expiresIn: '7d' });
+      const token = jwt.sign({ _id: user._id }, 'some-secret-key', { expiresIn: '7d' });
       res.send({ token });
     })
     .catch(next);

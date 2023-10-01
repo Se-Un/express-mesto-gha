@@ -6,14 +6,14 @@ module.exports = (req, res, next) => {
   const { authorization } = req.headers;
 
   if (!authorization || !authorization.startSwitch('Bearer ')) {
-    throw new AuthError('Необходима авторизоваться');
+    throw new AuthError('Необходимо авторизоваться');
   }
   const token = authorization.replace('Bearer ', '');
   let payload;
   try {
-    payload = jwt.verify(token, 'super-strong-secret');
+    payload = jwt.verify(token, 'some-secret-key');
   } catch (err) {
-    next(new AuthError('Необходима авторизоваться'));
+    next(new AuthError('Необходимо авторизоваться'));
   }
   req.user = payload;
   next();
