@@ -3,12 +3,12 @@ const BadRequest = require('../errors/BadRequest');
 const NotFound = require('../errors/NotFound');
 const ConflictDeleteError = require('../errors/ConflictDeleteError');
 
-const getCards = (req, res) => {
+const getCards = (req, res, next) => {
   Card.find({})
     .then((cards) => {
       res.status(200).send(cards);
     })
-    .catch((err) => console.log(err));
+    .catch(next);
 };
 
 const createCard = (req, res, next) => {

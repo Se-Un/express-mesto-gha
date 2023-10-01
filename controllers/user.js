@@ -75,7 +75,7 @@ const updateUser = (req, res, next) => {
       res.status(200).send(user);
     })
     .catch((err) => {
-      if (err.name === 'ValidationError' || err.name === 'CastError') {
+      if (err.name === 'ValidationError') {
         next(new BadRequest('Переданы некорректные данные'));
       } else {
         next(err);
@@ -93,7 +93,7 @@ const updateAvatar = (req, res, next) => {
   )
     .then((user) => res.status(200).send(user))
     .catch((err) => {
-      if (err.name === 'ValidationError' || err.name === 'CastError') {
+      if (err.name === 'ValidationError') {
         next(new BadRequest('Переданы некорректные данные'));
       } else {
         next(err);
@@ -121,10 +121,8 @@ const getCurrentUser = (req, res, next) => {
     })
     .catch((err) => console.dir(err))
     .catch((err) => {
-      if (err.name === 'CastError') {
+      if (err.name === 'ValidationError') {
         next(new BadRequest('Переданы некорректные данные'));
-      } else if (err.message === 'NotFound') {
-        next(new NotFound('Пользователь не найден'));
       } else {
         next(err);
       }
