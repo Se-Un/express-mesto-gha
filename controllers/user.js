@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const NotFound = require('../errors/NotFound');
 const BadRequest = require('../errors/BadRequest');
+const CurrentUserError = require('../errors/CurrentUserError');
 
 const getUsers = (req, res, next) => {
   User.find({})
@@ -42,11 +43,15 @@ const createUser = (req, res, next) => {
     }))
     .then(() => res.status(201).send(
       {
-        data: name, about, avatar, email,
+        data: {
+          name, about, avatar, email,
+        },
       },
     ))
-    .catch((err) => console.dir(err))
     .catch((err) => {
+      if (err.name === 11000) {
+        next(new CurrentUserError('Пользователь с таким email уже зарегистрирован'));
+      }
       if (err.name === 'ValidationError') {
         next(new BadRequest('Переданы некорректные данные'));
       } else {
