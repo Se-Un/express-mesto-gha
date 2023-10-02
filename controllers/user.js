@@ -119,14 +119,7 @@ const getCurrentUser = (req, res, next) => {
       }
       res.status(200).send(user);
     })
-    .catch((err) => console.dir(err))
-    .catch((err) => {
-      if (err.name === 'ValidationError') {
-        next(new BadRequest('Переданы некорректные данные'));
-      } else {
-        next(err);
-      }
-    });
+    .catch(next);
 };
 
 module.exports = {
